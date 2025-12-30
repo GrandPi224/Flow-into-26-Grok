@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>FLOW</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --aventurine: #4A7C59;
+            --tiffany-blue: #0ABAB5;
+            --warm-sand: #E8DCC4;
+            --clay: #B8860B;
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #FAFAFA;
+            --text-muted: rgba(255,255,255,0.8); /* Higher opacity for less eye strain */
+            --border-color: rgba(255,255,255,0.1);
+            
+            /* Base Font Scale for Mobile */
+            font-size: 18px; 
+        }
+
+        body.light-mode {
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #1a1a2e;
+            --text-muted: rgba(0,0,0,0.75);
+            --border-color: rgba(0,0,0,0.1);
+        }
+
+        body.bw-mode {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F5F5F5;
+            --text-primary: #000000;
+            --text-muted: rgba(0,0,0,0.9);
+            --border-color: rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', -apple-system, sans-serif;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 20px;
+            padding-top: env(safe-area-inset-top, 20px);
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+            line-height: 1.7; /* Increased line spacing */
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .ctrl-btn {
+            padding: 10px 15px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 50px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            letter-spacing: 0.2em;
+            background: linear-gradient(135deg, var(--warm-sand) 0%, var(--clay) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .brand-tag {
+            color: var(--tiffany-blue);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* 3-Sided Triangle Pyramid Styles */
+        .pyramids-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pyramid-section { width: 100%; max-width: 450px; text-align: center; }
+        
+        .level-title-text {
+            fill: white;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 700;
+            text-anchor: middle;
+            pointer-events: none;
+            font-size: 16px; /* Larger text inside SVG */
+        }
+
+        .pyramid-level { cursor: pointer; transition: opacity 0.2s; }
+        .pyramid-level:hover { opacity: 0.8; }
+
+        .pyramid-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--tiffany-blue);
+            margin-top: 15px;
+            display: block;
+        }
+
+        /* Description Panels */
+        .description-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            display: none;
+            text-align: left;
+        }
+
+        .description-panel.visible { display: block; }
+
+        .description-panel-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* Wheel of Life */
+        .content-wrapper { max-width: 800px; margin: 40px auto; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; padding: 20px 0; color: var(--tiffany-blue); border-bottom: 1px solid var(--border-color); cursor: pointer; }
+
+        .wheel-container { display: flex; flex-direction: column; align-items: center; padding: 30px 0; }
+        .wheel-svg { width: 100%; max-width: 400px; }
+        .wheel-label { font-size: 12px; font-weight: 700; fill: white; text-anchor: middle; }
+
+        .rating-panel { width: 100%; max-width: 400px; background: var(--bg-secondary); border-radius: 15px; padding: 25px; display: none; margin-top: 20px; }
+        .rating-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px; }
+        .rating-btn { aspect-ratio: 1; border-radius: 8px; border: 2px solid var(--border-color); background: transparent; color: var(--text-primary); font-size: 1.2rem; font-weight: 700; }
+        .rating-btn.selected { background: var(--tiffany-blue); border-color: var(--tiffany-blue); color: white; }
+
+        .total-score { font-size: 1.5rem; margin: 20px 0; font-weight: 700; }
+        .total-value { color: var(--tiffany-blue); font-size: 2.5rem; }
+
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <button class="ctrl-btn" onclick="setTheme('dark')">Dark</button>
+    <button class="ctrl-btn" onclick="setTheme('light')">Light</button>
+</div>
+
+<header>
+    <h1>FLOW</h1>
+    <p class="brand-tag">GROUNDED • NYR 2026</p>
+</header>
+
+<div class="pyramids-wrapper">
+    <div class="pyramid-section">
+        <svg viewBox="0 0 400 400" class="wheel-svg">
+            <polygon class="pyramid-level" points="200,20 225,70 175,70" fill="#8B5CF6" onclick="showChipDescription(7)"/>
+            <text x="200" y="58" class="level-title-text">Flow</text>
+
+            <polygon class="pyramid-level" points="175,70 225,70 250,120 150,120" fill="#EC4899" onclick="showChipDescription(6)"/>
+            <text x="200" y="105" class="level-title-text">Legacy</text>
+
+            <polygon class="pyramid-level" points="150,120 250,120 275,170 125,170" fill="#3B82F6" onclick="showChipDescription(5)"/>
+            <text x="200" y="155" class="level-title-text">Future</text>
+
+            <polygon class="pyramid-level" points="125,170 275,170 300,220 100,220" fill="#14B8A6" onclick="showChipDescription(4)"/>
+            <text x="200" y="205" class="level-title-text">Friends & Fun</text>
+
+            <polygon class="pyramid-level" points="100,220 300,220 325,270 75,270" fill="#A16207" onclick="showChipDescription(3)"/>
+            <text x="200" y="255" class="level-title-text">Focus & Fulfillment</text>
+
+            <polygon class="pyramid-level" points="75,270 325,270 350,320 50,320" fill="#EAB308" onclick="showChipDescription(2)"/>
+            <text x="200" y="305" class="level-title-text">Fitness & Finances</text>
+
+            <polygon class="pyramid-level" points="50,320 350,320 375,370 25,370" fill="#F97316" onclick="showChipDescription(1)"/>
+            <text x="200" y="355" class="level-title-text">Faith & Family</text>
+        </svg>
+        <span class="pyramid-label">Chip</span>
+        
+        <div class="description-panel" id="chip-panel">
+            <h3 id="chip-title" style="margin-bottom:10px;"></h3>
+            <p class="description-panel-text" id="chip-text"></p>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <h2 onclick="toggleSection(this)">Wheel of Life</h2>
+    <div class="wheel-container" id="wheelSection">
+        <svg class="wheel-svg" viewBox="0 0 440 440" id="lifeWheel">
+            <circle cx="220" cy="220" r="180" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            </svg>
+
+        <div class="total-score">Life Balance: <span class="total-value" id="totalScore">0</span>/80</div>
+        
+        <div class="rating-panel" id="ratingPanel">
+            <h3 id="ratingTitle">Select Category</h3>
+            <div class="rating-scale" id="ratingScale"></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>CHIP (Clearing House for Investment Portfolios) • AD 2026</p>
+    <p style="margin-top:10px; font-size: 0.8rem;">Educational framework only. Not investment advice.</p>
+</footer>
+
+<script>
+    function setTheme(theme) {
+        document.body.classList.remove('light-mode');
+        if (theme === 'light') document.body.classList.add('light-mode');
+    }
+
+    const chipData = {
+        1: { title: 'Faith & Family', text: 'Your bedrock. Belief provides the "why", family provides the support system.' },
+        2: { title: 'Fitness & Finances', text: 'Health is wealth. You cannot sustain one without the other.' },
+        3: { title: 'Focus & Fulfillment', text: 'Directing energy toward work that matters.' },
+        4: { title: 'Friends & Fun', text: 'Required for sustained performance and avoiding burnout.' },
+        5: { title: 'Future', text: 'Strategic planning and systems that compound over decades.' },
+        6: { title: 'Legacy', text: 'What outlasts you? Contribution and mentorship.' },
+        7: { title: 'Flow', text: 'The peak state where effort becomes effortless and time disappears.' }
+    };
+
+    function showChipDescription(level) {
+        const panel = document.getElementById('chip-panel');
+        document.getElementById('chip-title').innerText = chipData[level].title;
+        document.getElementById('chip-text').innerText = chipData[level].text;
+        panel.style.display = 'block';
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function toggleSection(el) {
+        const content = el.nextElementSibling;
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Initialize rating scale
+    const scale = document.getElementById('ratingScale');
+    for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'rating-btn';
+        btn.innerText = i;
+        btn.onclick = () => {
+            // Add score logic here
+            document.getElementById('totalScore').innerText = parseInt(document.getElementById('totalScore').innerText) + i;
+        };
+        scale.appendChild(btn);
+    }
+</script>
+
+</body>
+</html>
