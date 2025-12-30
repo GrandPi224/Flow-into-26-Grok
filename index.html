@@ -389,21 +389,13 @@
         flex-direction: column;
         align-items: center;
         padding: 20px 0;
-    }
-
-    @media (min-width: 1100px) {
-        .wheel-container {
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 50px;
-        }
+        gap: 30px;
     }
 
     .wheel-wrapper {
         position: relative;
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         margin: 0 auto;
     }
 
@@ -473,15 +465,15 @@
 
     .wheel-controls {
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
     }
 
     .rating-panel {
         background: rgba(30, 35, 50, 0.95);
         border: 1px solid rgba(255,255,255,0.15);
         border-radius: 16px;
-        padding: 20px;
-        margin-top: 20px;
+        padding: 24px;
+        margin-bottom: 20px;
         width: 100%;
         opacity: 0;
         transform: translateY(10px);
@@ -493,12 +485,6 @@
         opacity: 1;
         transform: translateY(0);
         pointer-events: all;
-    }
-
-    @media (min-width: 1100px) {
-        .rating-panel {
-            margin-top: 0;
-        }
     }
 
     .rating-panel-header {
@@ -538,13 +524,13 @@
     .rating-btn {
         flex: 1;
         aspect-ratio: 1;
-        max-width: 40px;
+        max-width: 48px;
         border: 2px solid rgba(255,255,255,0.25);
         background: rgba(255,255,255,0.05);
         border-radius: 50%;
         color: rgba(255,255,255,0.6);
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -565,34 +551,26 @@
     .rating-labels {
         display: flex;
         justify-content: space-between;
-        margin-top: 12px;
-        font-size: 0.75rem;
+        margin-top: 14px;
+        font-size: 0.8rem;
         color: rgba(255,255,255,0.4);
     }
 
     .score-summary {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    @media (min-width: 1100px) {
-        .score-summary {
-            border-top: none;
-            padding-top: 0;
-        }
+        gap: 12px;
+        margin-top: 0;
+        padding: 0;
     }
 
     .score-item {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
+        gap: 12px;
+        padding: 14px 16px;
         background: rgba(255,255,255,0.03);
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         transition: all 0.2s ease;
         border: 1px solid transparent;
@@ -608,14 +586,14 @@
     }
 
     .score-color {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         border-radius: 4px;
         flex-shrink: 0;
     }
 
     .score-label {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: rgba(255,255,255,0.7);
         flex: 1;
         white-space: nowrap;
@@ -624,10 +602,10 @@
     }
 
     .score-value {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         font-weight: 700;
         color: var(--tiffany-blue);
-        min-width: 24px;
+        min-width: 28px;
         text-align: right;
     }
 
@@ -639,42 +617,42 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
-        padding: 18px;
+        gap: 18px;
+        margin-top: 24px;
+        padding: 22px;
         background: linear-gradient(135deg, rgba(74,124,89,0.15) 0%, rgba(10,186,181,0.15) 100%);
-        border-radius: 12px;
+        border-radius: 14px;
         border: 1px solid rgba(255,255,255,0.1);
     }
 
     .total-label {
         font-family: 'Playfair Display', serif;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: var(--warm-sand);
     }
 
     .total-value {
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 2rem;
+        font-size: 2.4rem;
         font-weight: 700;
         color: var(--tiffany-blue);
     }
 
     .total-max {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: rgba(255,255,255,0.4);
     }
 
     .reset-btn {
         display: block;
-        margin: 20px auto 0;
-        padding: 12px 28px;
+        margin: 24px auto 0;
+        padding: 14px 32px;
         background: transparent;
         border: 1px solid rgba(255,255,255,0.2);
         border-radius: 8px;
         color: rgba(255,255,255,0.5);
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         cursor: pointer;
         transition: all 0.2s ease;
     }
@@ -742,8 +720,48 @@
         }
         
         .rating-btn {
-            max-width: 32px;
-            font-size: 0.8rem;
+            max-width: 36px;
+            font-size: 0.85rem;
+        }
+        
+        .wheel-wrapper {
+            max-width: 100%;
+        }
+        
+        .score-label {
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (min-width: 600px) {
+        .wheel-wrapper {
+            max-width: 550px;
+        }
+        
+        .wheel-controls {
+            max-width: 550px;
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .wheel-wrapper {
+            max-width: 600px;
+        }
+        
+        .wheel-controls {
+            max-width: 600px;
+        }
+        
+        .score-summary {
+            gap: 14px;
+        }
+        
+        .score-item {
+            padding: 16px 18px;
+        }
+        
+        .score-label {
+            font-size: 0.95rem;
         }
     }
 </style>
